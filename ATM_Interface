@@ -1,0 +1,106 @@
+package ATMInterface;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class ATM extends JFrame implements ActionListener {
+    private JTextField userIdField, userPinField;
+    private JButton transactionsHistoryButton, withdrawButton, depositButton, transferButton, quitButton;
+    private int balance;
+
+    public ATM() {
+        setLayout(new FlowLayout());
+        getContentPane().setBackground(UIManager.getColor("control"));
+
+        JLabel userIdLabel = new JLabel("User ID: ");
+        add(userIdLabel);
+
+        userIdField = new JTextField(10);
+        add(userIdField);
+
+        JLabel userPinLabel = new JLabel("User Pin: ");
+        add(userPinLabel);
+
+        userPinField = new JPasswordField(10);
+        add(userPinField);
+
+        transactionsHistoryButton = new JButton("Transactions History");
+        transactionsHistoryButton.setBackground(UIManager.getColor("control"));
+        add(transactionsHistoryButton);
+
+        withdrawButton = new JButton("Withdraw");
+        withdrawButton.setBackground(UIManager.getColor("control"));
+        add(withdrawButton);
+
+        depositButton = new JButton("Deposit");
+        depositButton.setBackground(UIManager.getColor("control"));
+        add(depositButton);
+
+        transferButton = new JButton("Transfer");
+        transferButton.setBackground(UIManager.getColor("control"));
+        add(transferButton);
+
+        quitButton = new JButton("Quit");
+        quitButton.setBackground(UIManager.getColor("control"));
+        add(quitButton);
+
+        transactionsHistoryButton.addActionListener(this);
+        withdrawButton.addActionListener(this);
+        depositButton.addActionListener(this);
+        transferButton.addActionListener(this);
+        quitButton.addActionListener(this);
+
+        setTitle("ATM Interface");
+        setSize(250, 250);
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String userId = userIdField.getText();
+        String userPin = userPinField.getText();
+
+        if (e.getSource() == transactionsHistoryButton) {
+// code to show transactions history
+            JOptionPane.showMessageDialog(null, "Transactions history for user " + userId);
+        } else if (e.getSource() == withdrawButton) {
+// code to perform withdraw
+            String withdrawAmount = JOptionPane.showInputDialog("Enter withdraw amount: ");
+            int amount = Integer.parseInt(withdrawAmount);
+            if (balance >= amount) {
+                balance -= amount;
+                JOptionPane.showMessageDialog(null, "Withdraw successful. Current balance: " + balance);
+            } else {
+                JOptionPane.showMessageDialog(null, "Insufficient balance");
+            }
+        } else if (e.getSource() == depositButton) {
+// code to perform deposit
+            String depositAmount = JOptionPane.showInputDialog("Enter deposit amount ");
+            int amount = Integer.parseInt(depositAmount);
+            balance += amount;
+            JOptionPane.showMessageDialog(null, "Deposit successful. Current balance: " + balance);
+        } else if (e.getSource() == transferButton) {
+// code to perform transfer
+            String recipient = JOptionPane.showInputDialog("Enter recipient's account number: ");
+            String transferAmount = JOptionPane.showInputDialog("Enter transfer amount: ");
+            int amount = Integer.parseInt(transferAmount);
+            if (balance >= amount) {
+                balance -= amount;
+                JOptionPane.showMessageDialog(null, "Transfer successful to recipient " + recipient + ". Current balance: " + balance);
+            } else {
+                JOptionPane.showMessageDialog(null, "Insufficient balance");
+            }
+        } else if (e.getSource() == quitButton) {
+// code to perform quit
+            JOptionPane.showMessageDialog(null, "Thank you for using ATM");
+            System.exit(0);
+        }
+    }
+
+    public static void main(String[] args) {
+        ATMInterface.ATM atm = new ATMInterface.ATM();
+    }
+}
+
